@@ -89,10 +89,10 @@ if not df_filtered.empty:
     # 데이터가 많을 경우 상위 15개만 그래프로 시각화
     df_chart = df_filtered.sort_values(by="동시 출현 일수", ascending=False).head(15)
     
-    # [변경] 마크 두께(size=25)를 주어 굵고 꽉 찬 느낌의 가로 막대그래프 구현
-    chart = alt.Chart(df_chart).mark_bar(size=25).encode(
+    # [변경] size=28로 두께를 키우고, scale(padding=0.4)을 추가하여 막대 사이 간격(Separate) 확보
+    chart = alt.Chart(df_chart).mark_bar(size=28).encode(
         x=alt.X("동시 출현 일수:Q", title="동시 출현 일수 (일)"),
-        y=alt.Y("메뉴 조합:N", sort="-x", title="메뉴 조합"),
+        y=alt.Y("메뉴 조합:N", sort="-x", title="메뉴 조합", scale=alt.Scale(padding=0.4)),
         color=alt.Color("동시 출현 일수:Q", scale=alt.Scale(scheme="blues"), legend=None),
         tooltip=[
             alt.Tooltip("메뉴 조합:N", title="조합"),
@@ -102,7 +102,7 @@ if not df_filtered.empty:
         ]
     ).properties(
         title="✨ 조건별 상위 메뉴 조합 동시 출현 빈도 (최대 15개)",
-        height=450
+        height=550  # 간격이 늘어난 만큼 전체 그래프 높이도 키워 답답함을 없앴습니다.
     ).configure_axis(
         labelFontSize=12,
         titleFontSize=14
